@@ -6,12 +6,16 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 @Service
 public class RegraInscricaoService {
 
     private static final LocalDate DATA_PROVA = LocalDate.of(2027, 3, 14);
-    private static final int IDADE_MINIMA = 14;
+
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
 
     public int calcularIdadeNaProva(LocalDate dataNascimento) {
         return Period.between(dataNascimento, DATA_PROVA).getYears();
@@ -35,10 +39,13 @@ public class RegraInscricaoService {
         return Categoria.SENIOR;
     }
 
-    public void validarParticipacao(LocalDate dataNascimento, Percurso percurso) {
+    public void validarParticipacao(
+            LocalDate dataNascimento,
+            Percurso percurso
+    ) {
         int idade = calcularIdadeNaProva(dataNascimento);
 
-        if (idade < IDADE_MINIMA) {
+        if (idade < 14) {
             throw new IllegalArgumentException(
                     "A idade mínima para participar é 14 anos."
             );
@@ -52,11 +59,44 @@ public class RegraInscricaoService {
     }
 
     public String normalizarNome(String nome) {
-        return nome.trim().replaceAll("\\s+", " ");
+        if (nome == null) {
+            throw new IllegalArgumentException(
+                    "O nome é obrigatório."
+            );
+        }
+
+        String nomeNormalizado = nome
+                .trim()
+                .replaceAll("\\s+", " ");
+
+        if (nomeNormalizado.length() < 3
+                || nomeNormalizado.length() > 100) {
+            throw new IllegalArgumentException(
+                    "O nome deve ter entre 3 e 100 caracteres."
+            );
+        }
+
+        return nomeNormalizado;
     }
 
     public String normalizarEmail(String email) {
-        return email.trim().toLowerCase();
+        if (email == null) {
+            throw new IllegalArgumentException(
+                    "O e-mail é obrigatório."
+            );
+        }
+
+        String emailNormalizado = email
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
+        if (!EMAIL_PATTERN.matcher(emailNormalizado).matches()) {
+            throw new IllegalArgumentException(
+                    "O e-mail deve ser válido."
+            );
+        }
+
+        return emailNormalizado;
     }
 
     public LocalDate getDataProva() {
