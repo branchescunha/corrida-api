@@ -98,8 +98,4 @@ public class RegraInscricaoService {
 
         return emailNormalizado;
     }
-
-    public LocalDate getDataProva() {
-        return DATA_PROVA;
-    }
 }

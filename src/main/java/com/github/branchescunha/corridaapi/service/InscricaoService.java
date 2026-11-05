@@ -70,34 +70,16 @@ public class InscricaoService {
     }
 
     public InscricaoResponseDTO buscarPorEmail(String email) {
-        String emailNormalizado =
-                regraInscricaoService.normalizarEmail(email);
-
-        Inscricao inscricao = repository
-                .findByEmail(emailNormalizado)
-                .orElseThrow(
-                        () -> new NoSuchElementException(
-                                "Não existe inscrição ativa para o e-mail informado."
-                        )
-                );
-
-        return converterParaResponse(inscricao);
+        return converterParaResponse(
+                buscarEntidadePorEmail(email)
+        );
     }
 
     public InscricaoResponseDTO atualizar(
             String email,
             InscricaoEdicaoDTO dados
     ) {
-        String emailNormalizado =
-                regraInscricaoService.normalizarEmail(email);
-
-        Inscricao inscricao = repository
-                .findByEmail(emailNormalizado)
-                .orElseThrow(
-                        () -> new NoSuchElementException(
-                                "Não existe inscrição ativa para o e-mail informado."
-                        )
-                );
+        Inscricao inscricao = buscarEntidadePorEmail(email);
 
         /*
          * Todas as validações são executadas antes de alterar
@@ -124,18 +106,9 @@ public class InscricaoService {
     }
 
     public void cancelar(String email) {
-        String emailNormalizado =
-                regraInscricaoService.normalizarEmail(email);
-
-        Inscricao inscricao = repository
-                .findByEmail(emailNormalizado)
-                .orElseThrow(
-                        () -> new NoSuchElementException(
-                                "Não existe inscrição ativa para o e-mail informado."
-                        )
-                );
-
-        repository.delete(inscricao);
+        repository.delete(
+                buscarEntidadePorEmail(email)
+        );
     }
 
     public ResumoDTO obterResumo() {
@@ -154,6 +127,19 @@ public class InscricaoService {
                 km5,
                 km10
         );
+    }
+
+    private Inscricao buscarEntidadePorEmail(String email) {
+        String emailNormalizado =
+                regraInscricaoService.normalizarEmail(email);
+
+        return repository
+                .findByEmail(emailNormalizado)
+                .orElseThrow(
+                        () -> new NoSuchElementException(
+                                "Não existe inscrição ativa para o e-mail informado."
+                        )
+                );
     }
 
     private InscricaoResponseDTO converterParaResponse(
