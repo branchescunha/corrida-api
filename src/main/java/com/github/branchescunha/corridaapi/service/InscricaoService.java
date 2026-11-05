@@ -1,5 +1,7 @@
 package com.github.branchescunha.corridaapi.service;
 
+import com.github.branchescunha.corridaapi.dto.ResumoDTO;
+import com.github.branchescunha.corridaapi.enums.Percurso;
 import com.github.branchescunha.corridaapi.dto.InscricaoCadastroDTO;
 import com.github.branchescunha.corridaapi.dto.InscricaoEdicaoDTO;
 import com.github.branchescunha.corridaapi.dto.InscricaoResponseDTO;
@@ -90,6 +92,15 @@ public class InscricaoService {
     public void cancelar(String email) {
         Inscricao inscricao = buscarEntidadePorEmail(email);
         repository.delete(inscricao);
+    }
+
+    @Transactional(readOnly = true)
+    public ResumoDTO obterResumo() {
+        long total = repository.count();
+        long km5 = repository.countByPercurso(Percurso.KM_5);
+        long km10 = repository.countByPercurso(Percurso.KM_10);
+
+        return new ResumoDTO(total, km5, km10);
     }
 
     private Inscricao buscarEntidadePorEmail(String email) {

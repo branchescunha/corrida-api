@@ -1,5 +1,6 @@
 package com.github.branchescunha.corridaapi.controller;
 
+import com.github.branchescunha.corridaapi.dto.ResumoDTO;
 import com.github.branchescunha.corridaapi.dto.InscricaoCadastroDTO;
 import com.github.branchescunha.corridaapi.dto.InscricaoEdicaoDTO;
 import com.github.branchescunha.corridaapi.dto.InscricaoResponseDTO;
@@ -35,6 +36,11 @@ public class InscricaoController {
     @GetMapping
     public ResponseEntity<List<InscricaoResponseDTO>> listar() {
         return ResponseEntity.ok(service.listar());
+    }
+
+    @GetMapping("/resumo")
+    public ResponseEntity<ResumoDTO> obterResumo() {
+        return ResponseEntity.ok(service.obterResumo());
     }
 
     @GetMapping("/{email}")

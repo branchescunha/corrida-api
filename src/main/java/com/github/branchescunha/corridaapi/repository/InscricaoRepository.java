@@ -1,6 +1,7 @@
 package com.github.branchescunha.corridaapi.repository;
 
 import com.github.branchescunha.corridaapi.entity.Inscricao;
+import com.github.branchescunha.corridaapi.enums.Percurso;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface InscricaoRepository extends JpaRepository<Inscricao, Long> {
     boolean existsByEmail(String email);
 
     List<Inscricao> findAllByOrderByIdAsc();
+
+    long countByPercurso(Percurso percurso);
 }
