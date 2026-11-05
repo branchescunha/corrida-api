@@ -29,7 +29,12 @@ public class Inscricao {
     public Inscricao() {
     }
 
-    public Inscricao(String nome, String email, LocalDate dataNascimento, Percurso percurso) {
+    public Inscricao(
+            String nome,
+            String email,
+            LocalDate dataNascimento,
+            Percurso percurso
+    ) {
         this.nome = nome;
         this.email = email;
         this.dataNascimento = dataNascimento;
@@ -50,10 +55,6 @@ public class Inscricao {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public LocalDate getDataNascimento() {

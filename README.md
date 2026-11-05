@@ -96,7 +96,7 @@ Resposta:
   "dataNascimento": "2000-05-10",
   "percurso": "KM_10",
   "idadeNaProva": 26,
-  "categoria": "Adulto"
+  "categoria": "ADULTO"
 }
 ```
 
@@ -193,18 +193,22 @@ http://localhost:8080
 A suíte automatizada cobre:
 
 - inicialização do contexto Spring
-- cálculo de idade
-- categorias Juvenil, Adulto, Master e Senior
+- cálculo da idade antes, no dia e depois do aniversário na data da prova
+- categorias nas bordas 17/18, 39/40 e 59/60
 - idade mínima de 14 anos
-- restrição dos 10 km
-- permissão para percurso de 5 km
+- precedência da idade mínima sobre a regra dos 10 km
+- restrição dos 10 km para menores de 18 anos
+- permissão dos 10 km a partir dos 18 anos
+- permissão do percurso de 5 km
 - normalização de e-mail
 - normalização de nome
+- validação do nome após normalização
+- validação do e-mail após normalização
 
 Resultado atual:
 
 ```text
-Tests run: 11
+Tests run: 18
 Failures: 0
 Errors: 0
 Skipped: 0
